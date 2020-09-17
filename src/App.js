@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{useEffect, useState} from 'react';
+import axios from 'axios'
 import './App.css';
 
 function App() {
+
+  const[images, setImages] = useState('');
+
+  const handleChange =()=>{
+    axios.get('https://api.generated.photos/api/v1/faces?api_key=WQ1tMX2q9Q4rTWKzolcHXw&order_by=random')
+    .then((res)=>{
+            console.log(res.data.faces[0].urls[4][512])
+            const url = res.data.faces[0].urls[4][512];
+             setImages(url)
+            
+    })
+    .catch((err)=>{
+            console.log(err.message)
+    })
+  }
+
   return (
+    <>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Random photos</h1>
+      {images &&<img className="App2" src={images} alt="Al faces"/>}
+      <button  onClick={handleChange}>new photos</button>
     </div>
+    
+     </>
   );
 }
 
